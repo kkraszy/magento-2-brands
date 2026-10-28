@@ -1,0 +1,116 @@
+<?php
+/**
+ * Brand logos on the home page, one scrollable row.
+ *
+ * Theme-neutral `kk-` classes with their own styles, because Tailwind does not
+ * generate classes it only sees in a module.
+ *
+ * @var \Kkkonrad\Brands\Block\Brands $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$brands = $block->getBrands();
+if (!$brands) {
+    return;
+}
+?>
+<section class="kk-brands-strip" aria-labelledby="kk-brands-strip-title">
+    <div class="kk-brands-strip__head">
+        <h2 class="kk-brands-strip__title" id="kk-brands-strip-title"><?= $escaper->escapeHtml(__('Our brands')) ?></h2>
+        <a class="kk-brands-strip__all" href="<?= $escaper->escapeUrl($block->getListUrl()) ?>">
+            <?= $escaper->escapeHtml(__('All brands')) ?> &rarr;
+        </a>
+    </div>
+    <ul class="kk-brands-strip__list">
+        <?php foreach ($brands as $brand): ?>
+            <li>
+                <a class="kk-brands-strip__item" href="<?= $escaper->escapeUrl($brand['url']) ?>">
+                    <?php if ($brand['logo']): ?>
+                        <img src="<?= $escaper->escapeUrl($brand['logo']) ?>" loading="lazy"
+                             alt="<?= $escaper->escapeHtmlAttr($brand['name']) ?>">
+                    <?php else: ?>
+                        <span><?= $escaper->escapeHtml($brand['name']) ?></span>
+                    <?php endif ?>
+                </a>
+            </li>
+        <?php endforeach ?>
+    </ul>
+</section>
+<style>
+    /* em, not rem: Luma's root font-size is 10px (62.5%), Hyvä's is 16px */
+    .kk-brands-strip {
+        max-width: 1280px;
+        margin: 3em auto;
+        padding: 0 1em;
+    }
+    .kk-brands-strip__head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1em;
+        margin-bottom: 1em;
+    }
+    .kk-brands-strip__title {
+        margin: 0;
+        font-size: 1.5em;
+    }
+    .kk-brands-strip__all {
+        flex: none;
+        font-size: .9em;
+        text-decoration: underline;
+    }
+    .kk-brands-strip__list {
+        display: flex;
+        gap: .75em;
+        margin: 0;
+        padding: 0 0 .5em;
+        list-style: none;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+    }
+    .kk-brands-strip__list li {
+        flex: 0 0 auto;
+        margin: 0;
+        scroll-snap-align: start;
+    }
+    .kk-brands-strip__item {
+        display: grid;
+        place-items: center;
+        width: 10em;
+        height: 5.5em;
+        padding: .9em 1.2em;
+        border: 1px solid rgb(0 0 0 / .08);
+        border-radius: .75em;
+        background: #fff;
+        color: inherit;
+        font-weight: 600;
+        text-decoration: none;
+        transition: border-color .2s, box-shadow .2s;
+    }
+    .kk-brands-strip__item img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        filter: grayscale(1);
+        opacity: .65;
+        transition: filter .2s, opacity .2s;
+    }
+    .kk-brands-strip__item:hover,
+    .kk-brands-strip__item:focus-visible {
+        border-color: rgb(0 0 0 / .2);
+        box-shadow: 0 4px 14px rgb(0 0 0 / .08);
+    }
+    .kk-brands-strip__item:hover img,
+    .kk-brands-strip__item:focus-visible img {
+        filter: none;
+        opacity: 1;
+    }
+    /* Touch has no hover: show the logos in colour */
+    @media (hover: none) {
+        .kk-brands-strip__item img {
+            filter: none;
+            opacity: 1;
+        }
+    }
+</style>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+  The product list is the same block tree as core's advanced search result, so
+  the theme's own list.phtml, toolbar and product cards render it. The
+  controller sets the brand and the collection.
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="catalog_list_item"/>
+    <body>
+        <attribute name="class" value="page-products"/>
+        <referenceContainer name="content">
+            <block class="Kkkonrad\Brands\Block\Brands" name="kkkonrad.brand.header" before="-"
+                   template="Kkkonrad_Brands::header.phtml"/>
+            <block class="Magento\Catalog\Block\Product\ListProduct" name="kkkonrad.brand.products"
+                   template="Magento_Catalog::product/list.phtml">
+                <block class="Magento\Catalog\Block\Product\ProductList\Toolbar" name="product_list_toolbar"
+                       template="Magento_Catalog::product/list/toolbar.phtml">
+                    <block class="Magento\Theme\Block\Html\Pager" name="product_list_toolbar_pager"/>
+                </block>
+                <action method="setToolbarBlockName">
+                    <argument name="name" xsi:type="string">product_list_toolbar</argument>
+                </action>
+                <container name="kkkonrad.brand.products.additional" as="additional"/>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="kkkonrad.brand.products.additional">
+            <block name="kkkonrad.brand.products.js.compare" template="Magento_Catalog::product/list/js/compare.phtml"/>
+            <block name="kkkonrad.brand.products.js.wishlist" template="Magento_Catalog::product/list/js/wishlist.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

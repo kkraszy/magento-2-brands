@@ -1,0 +1,91 @@
+<?php
+/**
+ * All brands, A-Z, on /producenci.
+ *
+ * @var \Kkkonrad\Brands\Block\Brands $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$brands = $block->getBrands();
+?>
+<?php if (!$brands): ?>
+    <p><?= $escaper->escapeHtml(__('No brands yet.')) ?></p>
+    <?php return ?>
+<?php endif ?>
+<ul class="kk-brands">
+    <?php foreach ($brands as $brand): ?>
+        <li>
+            <a class="kk-brands__item" href="<?= $escaper->escapeUrl($brand['url']) ?>">
+                <span class="kk-brands__logo">
+                    <?php if ($brand['logo']): ?>
+                        <img src="<?= $escaper->escapeUrl($brand['logo']) ?>" alt="" loading="lazy">
+                    <?php else: ?>
+                        <span class="kk-brands__initial" aria-hidden="true"><?= $escaper->escapeHtml(mb_substr($brand['name'], 0, 1)) ?></span>
+                    <?php endif ?>
+                </span>
+                <span class="kk-brands__name"><?= $escaper->escapeHtml($brand['name']) ?></span>
+            </a>
+        </li>
+    <?php endforeach ?>
+</ul>
+<style>
+    /* em, not rem: Luma's root font-size is 10px (62.5%), Hyvä's is 16px */
+    .kk-brands {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(11em, 1fr));
+        gap: 1em;
+        margin: 1em 0 3em;
+        padding: 0;
+        list-style: none;
+    }
+    .kk-brands li {
+        margin: 0;
+    }
+    .kk-brands__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .75em;
+        height: 100%;
+        padding: 1.25em 1em 1em;
+        border: 1px solid rgb(0 0 0 / .08);
+        border-radius: .9em;
+        background: #fff;
+        color: inherit;
+        text-decoration: none;
+        transition: border-color .2s, box-shadow .2s, transform .2s;
+    }
+    .kk-brands__item:hover,
+    .kk-brands__item:focus-visible {
+        border-color: rgb(0 0 0 / .2);
+        box-shadow: 0 6px 18px rgb(0 0 0 / .08);
+        transform: translateY(-2px);
+    }
+    .kk-brands__logo {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 5em;
+    }
+    .kk-brands__logo img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    .kk-brands__initial {
+        display: grid;
+        place-items: center;
+        width: 2.4em;
+        height: 2.4em;
+        border-radius: 50%;
+        background: var(--color-primary, #111);
+        color: #fff;
+        font-size: 1.6em;
+        font-weight: 700;
+    }
+    .kk-brands__name {
+        font-size: .9em;
+        font-weight: 600;
+        text-align: center;
+    }
+</style>

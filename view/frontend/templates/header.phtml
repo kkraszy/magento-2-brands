@@ -1,0 +1,39 @@
+<?php
+/**
+ * Brand page: logo and a way back to all brands, above the product list.
+ * The page title (brand name) comes from the theme's own title block.
+ *
+ * @var \Kkkonrad\Brands\Block\Brands $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$brand = $block->getData('brand');
+?>
+<div class="kk-brand-head">
+    <?php if ($brand['logo']): ?>
+        <img class="kk-brand-head__logo" src="<?= $escaper->escapeUrl($brand['logo']) ?>"
+             alt="<?= $escaper->escapeHtmlAttr($brand['name']) ?>">
+    <?php endif ?>
+    <a class="kk-brand-head__back" href="<?= $escaper->escapeUrl($block->getListUrl()) ?>">
+        &larr; <?= $escaper->escapeHtml(__('All brands')) ?>
+    </a>
+</div>
+<style>
+    .kk-brand-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1em;
+        margin: 0 0 1.5em;
+    }
+    .kk-brand-head__logo {
+        max-width: 12em;
+        max-height: 4.5em;
+        object-fit: contain;
+    }
+    .kk-brand-head__back {
+        margin-left: auto;
+        font-size: .9em;
+        text-decoration: underline;
+    }
+</style>
